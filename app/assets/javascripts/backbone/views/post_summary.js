@@ -1,14 +1,14 @@
 App.Views.PostSummary = Backbone.View.extend({
 
   tagName: 'li',
-  className: 'post-summary',
 
   events: {
-    'click': 'showPost'
+    'click .post-summary': 'showPost',
+    'click .post-vote-btn': 'voteForPost'
   },
 
   initialize: function(options) {
-    _.bindAll(this, 'showPost');
+    _.bindAll(this, 'showPost', 'voteForPost');
     this.post = options.post
     return this;
   },
@@ -19,7 +19,14 @@ App.Views.PostSummary = Backbone.View.extend({
   },
 
   showPost: function () {
+    console.log('Inside show post');
     App.router.navigate('/posts/'+this.post.id, { trigger:true } );
+  },
+
+  voteForPost: function (ev) {
+    ev.preventDefault();
+    this.post.vote();
+    console.log('vote fn is working');
   }
 
 });

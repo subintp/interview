@@ -1,6 +1,7 @@
 class PostsController < ApplicationController
 
-  before_action :fetch_post, only: [:show, :update, :destroy]
+  before_action :fetch_post, only: [:show, :update, :destroy, :vote]
+  before_action :build_vote, only: [:vote]
 
   def index
     @posts = Post.all
@@ -30,6 +31,12 @@ class PostsController < ApplicationController
     head :ok
   end
 
+
+  def vote
+    @vote.save!
+    render json: { post: @post, votes_count: @post.votes.count }
+  end
+
   private
 
   def fetch_post
@@ -38,6 +45,10 @@ class PostsController < ApplicationController
 
   def post_params
     params.require(:post).permit(:title, :body)
+  end
+
+  def build_vote
+    @vote = @post.votes.build
   end
 
 end
