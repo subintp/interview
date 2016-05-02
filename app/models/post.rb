@@ -7,4 +7,14 @@ class Post < ActiveRecord::Base
   has_many :votes, dependent: :destroy
 
 
+  def as_json(options={})
+    super(:only => [:id, :title],
+          :methods => [:votes_count]
+    )
+  end
+
+  def votes_count
+    votes.count
+  end
+
 end
